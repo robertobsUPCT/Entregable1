@@ -68,6 +68,21 @@ class Repuesto():
     def get_disponibles(self) -> int:
         return self.__stock
 
+    def precio_total(self, cantidad:int) -> float:
+        if cantidad <= 0:
+            raise ValueError("La cantidad debe ser mayor que cero")
+        return self.precio * cantidad
+
+    def es_disponible(self, cantidad:int) -> bool:
+        if cantidad <= 0:
+            raise ValueError("La cantidad debe ser mayor que cero")
+        return self.__stock >= cantidad
+
+    def actualizar_precio(self, nuevo_precio:float):
+        if nuevo_precio <= 0:
+            raise ValueError("El precio debe ser mayor que cero")
+        self.precio = nuevo_precio
+
     def agregar_stock(self, n):
         try:
             if n < 0:
@@ -108,6 +123,21 @@ class Almacen():
             if repuesto.nombre == nom:
                 return repuesto
         return None
+
+    def inventario(self) -> dict:
+        """Devuelve un diccionario {nombre_repuesto: stock} para todo el catálogo."""
+        return {r.nombre: r.get_disponibles() for r in self.catalogo}
+
+    def buscar_por_proveedor(self, proveedor:str) -> list[Repuesto]:
+        return [r for r in self.catalogo if r.proveedor == proveedor]
+
+    def eliminar_repuesto(self, nombre:str) -> bool:
+        """Elimina un repuesto por nombre. Devuelve True si se eliminó, False si no existía."""
+        for i, repuesto in enumerate(self.catalogo):
+            if repuesto.nombre == nombre:
+                del self.catalogo[i]
+                return True
+        return False
     
     def mostrar_catalogo(self):
         for repuesto in self.catalogo:
@@ -154,6 +184,28 @@ class Comandante(Usuario):
         except Exception as e:
             print(f"Error al adquirir repuesto: {e}")
 
+    def comparar_precios(self, nombre_repuesto:str, almacenes:list[Almacen]):
+        """Busca el almacén con el menor precio para un repuesto dado (precio por unidad)."""
+        mejor_precio = None
+        mejor_almacen = None
+
+        for almacen in almacenes:
+            repuesto = almacen.buscar_repuesto(nombre_repuesto)
+            if repuesto is None:
+                continue
+
+            precio_unitario = repuesto.precio
+            if mejor_precio is None or precio_unitario < mejor_precio:
+                mejor_precio = precio_unitario
+                mejor_almacen = almacen
+
+        if mejor_almacen is None:
+            print(f"No se encontró el repuesto '{nombre_repuesto}' en los almacenes proporcionados.")
+            return None
+
+        print(f"El mejor precio de '{nombre_repuesto}' es {mejor_precio} en {mejor_almacen.nombre}.")
+        return mejor_almacen, mejor_precio
+
 class Operario(Usuario):
     def __init__(self,usuario,almacen:Almacen):
         super().__init__(usuario)
@@ -182,26 +234,110 @@ class Operario(Usuario):
 
 def main():
     try:
-        # Instanciamos algunas naves
-        estacion = Estacion_Espacial("Outpost 42", "EST-001", 1234, tripulacion=120, pasaje=0, ubicacion=Ubicacion.Endor)
-        caza = Caza_Estelar("Interceptor", "CZA-007", 9876, dotacion=2)
+        print("=== Sistema de Mantenimiento de la Flota Espacial ===\n")
 
-        # Creamos un almacén con algunos repuestos
+        # 1. Crear naves de diferentes tipos
+        print("1. Creando naves:")
+        estacion = Estacion_Espacial("Outpost 42", "EST-001", 1234, tripulacion=120, pasaje=0, ubicacion=Ubicacion.Endor)
+        nave_estelar = Nave_Estelar("Executor", "NES-002", 5678, tripulacion=5000, pasaje=1000, clase=Clase.Ejecutor)
+        caza = Caza_Estelar("TIE Fighter", "CZA-007", 9876, dotacion=1)
+        print(f"- {estacion}")
+        print(f"- {nave_estelar}")
+        print(f"- {caza}\n")
+
+        # 2. Crear almacenes con repuestos iniciales
+        print("2. Creando almacenes con repuestos:")
         repuesto1 = Repuesto("Motor hiperespacial", "Initech", stock=5, precio=3000.0)
         repuesto2 = Repuesto("Panel de energia", "WayneTech", stock=10, precio=450.0)
-        almacen = Almacen("Almacén Central", "Sector 7", catalogo=[repuesto1, repuesto2])
+        repuesto3 = Repuesto("Escudo deflector", "Stark", stock=3, precio=1200.0)
+        repuesto4 = Repuesto("Motor hiperespacial", "CheapParts", stock=8, precio=2500.0)  # Mismo nombre, precio diferente
 
-        # Operario añade un nuevo repuesto
-        ope = Operario("Juan", almacen)
-        ope.añadir_repuesto(Repuesto("Escudo deflector", "Stark", stock=3, precio=1200.0))
+        almacen_central = Almacen("Almacén Central", "Sector 7", catalogo=[repuesto1, repuesto2])
+        almacen_secundario = Almacen("Almacén Secundario", "Sector 8", catalogo=[repuesto3, repuesto4])
+        print(f"- {almacen_central}")
+        print(f"- {almacen_secundario}\n")
 
-        # Comandante consulta y adquiere repuestos
-        com = Comandante("Leia", estacion)
-        com.consultar_disponibilidad("Motor hiperespacial", almacen)
-        com.adquirir_repuesto("Motor hiperespacial", almacen, 2)
+        # 3. Operaciones de operarios: añadir repuestos, cambiar stock
+        print("3. Operaciones de operarios:")
+        ope1 = Operario("Juan", almacen_central)
+        ope2 = Operario("Ana", almacen_secundario)
+        print(f"- {ope1}")
+        print(f"- {ope2}")
 
-        # Forzar un error con una cantidad inválida
-        com.adquirir_repuesto("Panel de energia", almacen, -1)
+        # Añadir repuesto nuevo
+        ope1.añadir_repuesto(Repuesto("Hiperimpulsor", "Galactic", stock=2, precio=5000.0))
+        print("  - Juan añade 'Hiperimpulsor' al almacén central")
+
+        # Cambiar stock (agregar)
+        ope2.cambiar_stock("Escudo deflector", 5)
+        print("  - Ana aumenta stock de 'Escudo deflector' en 5 unidades")
+
+        # Cambiar stock (retirar)
+        ope1.cambiar_stock("Panel de energia", -3)
+        print("  - Juan reduce stock de 'Panel de energia' en 3 unidades\n")
+
+        # 4. Operaciones de comandantes: consultar, adquirir, comparar precios
+        print("4. Operaciones de comandantes:")
+        com1 = Comandante("Leia", estacion)
+        com2 = Comandante("Han", nave_estelar)
+        print(f"- {com1}")
+        print(f"- {com2}")
+
+        # Consultar disponibilidad
+        print("  - Leia consulta disponibilidad de 'Motor hiperespacial':")
+        com1.consultar_disponibilidad("Motor hiperespacial", almacen_central)
+
+        # Adquirir repuesto
+        print("  - Leia adquiere 2 unidades de 'Motor hiperespacial':")
+        com1.adquirir_repuesto("Motor hiperespacial", almacen_central, 2)
+
+        # Comparar precios entre almacenes
+        print("  - Han compara precios de 'Motor hiperespacial' en ambos almacenes:")
+        com2.comparar_precios("Motor hiperespacial", [almacen_central, almacen_secundario])
+
+        # Usar métodos de utilidad en Repuesto
+        print("\n5. Utilidades de repuestos:")
+        motor = almacen_central.buscar_repuesto("Motor hiperespacial")
+        if motor:
+            print(f"  - Precio total de 3 motores: {motor.precio_total(3)} cr")
+            print(f"  - ¿Disponible 10 unidades? {motor.es_disponible(10)}")
+            print(f"  - Actualizando precio a 3200.0 cr")
+            motor.actualizar_precio(3200.0)
+            print(f"  - Nuevo precio: {motor.precio} cr")
+
+        # 6. Utilidades de almacén: inventario, búsqueda por proveedor, eliminar
+        print("\n6. Utilidades de almacenes:")
+        print("  - Inventario del almacén central:")
+        for nombre, stock in almacen_central.inventario().items():
+            print(f"    {nombre}: {stock} unidades")
+
+        print("  - Repuestos de 'WayneTech' en almacén central:")
+        for rep in almacen_central.buscar_por_proveedor("WayneTech"):
+            print(f"    {rep}")
+
+        print("  - Eliminando 'Panel de energia' del almacén central:")
+        eliminado = almacen_central.eliminar_repuesto("Panel de energia")
+        print(f"    Eliminado: {eliminado}")
+
+        # 7. Mostrar catálogos finales
+        print("\n7. Catálogos finales:")
+        print("  - Almacén Central:")
+        almacen_central.mostrar_catalogo()
+        print("  - Almacén Secundario:")
+        almacen_secundario.mostrar_catalogo()
+
+        # 8. Forzar errores para probar excepciones
+        print("\n8. Pruebas de excepciones:")
+        try:
+            com1.adquirir_repuesto("Panel de energia", almacen_central, -1)  # Cantidad inválida
+        except Exception as e:
+            print(f"  - Error esperado en adquisición: {e}")
+
+        try:
+            ope1.cambiar_stock("NoExiste", 1)  # Repuesto no existe
+        except Exception as e:
+            print(f"  - Error esperado en cambio de stock: {e}")
+
     except Exception as e:
         print(f"Ocurrió un error en la ejecución principal: {e}")
 
