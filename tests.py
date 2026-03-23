@@ -17,6 +17,7 @@ from entregable1 import (
 
 
 def test_repuesto_precios_y_disponibilidad():
+    """Verifica cálculos de precio total, disponibilidad y validaciones de repuestos."""
     rep = Repuesto("Motor", "Proveedor", stock=5, precio=10.0)
 
     assert rep.precio_total(3) == 30.0
@@ -37,6 +38,7 @@ def test_repuesto_precios_y_disponibilidad():
 
 
 def test_almacen_inventario_y_busquedas():
+    """Verifica inventario, búsquedas por proveedor y eliminación en almacén."""
     rep1 = Repuesto("A", "P1", stock=3, precio=5.0)
     rep2 = Repuesto("B", "P2", stock=2, precio=6.0)
     almacen = Almacen("Alma", "Lugar", catalogo=[rep1, rep2])
@@ -51,6 +53,7 @@ def test_almacen_inventario_y_busquedas():
 
 
 def test_comandante_comparar_precios():
+    """Verifica comparación de precios entre almacenes para un repuesto."""
     rep_a1 = Repuesto("RepuestoX", "P", stock=5, precio=100.0)
     rep_a2 = Repuesto("RepuestoX", "P", stock=5, precio=80.0)
 
@@ -69,6 +72,7 @@ def test_comandante_comparar_precios():
 
 
 def test_creacion_y_str_unidad_y_nave():
+    """Verifica creación y representación string de Unidad_Combate y Nave."""
     u = Unidad_Combate("ID-1", 42)
     assert "ID-1" in str(u)
 
@@ -78,6 +82,7 @@ def test_creacion_y_str_unidad_y_nave():
 
 
 def test_clases_de_naves_especializadas_y_str():
+    """Verifica creación y representaciones de Estacion_Espacial, Nave_Estelar y Caza_Estelar."""
     est = Estacion_Espacial("Outpost", "EST-1", 1, tripulacion=10, pasaje=5, ubicacion=Ubicacion.Endor)
     assert "Outpost" in str(est)
     assert est.tripulacion == 10
@@ -92,6 +97,7 @@ def test_clases_de_naves_especializadas_y_str():
 
 
 def test_usuarios_operaciones_basicas():
+    """Verifica operaciones básicas que realizan operarios y comandantes sobre el almacén."""
     almacen = Almacen("Alma", "Lugar")
     ope = Operario("Juan", almacen)
     assert "Juan" in str(ope)
@@ -114,5 +120,6 @@ def test_usuarios_operaciones_basicas():
 
 
 def test_usuario_basico_str():
+    """Verifica la representación string del usuario genérico."""
     u = Usuario("Pepito")
     assert "Usuario" in str(u)
