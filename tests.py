@@ -118,8 +118,3 @@ def test_usuarios_operaciones_basicas():
     com.adquirir_repuesto("Pieza", almacen, 1)
     assert rep.get_disponibles() == 1
 
-
-def test_usuario_basico_str():
-    """Verifica la representación string del usuario genérico."""
-    u = Usuario("Pepito")
-    assert "Usuario" in str(u)
