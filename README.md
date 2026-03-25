@@ -31,6 +31,10 @@ pytest tests.py
 - `Entregable1.py` - Todo el código
 - `tests.py` - Tests unitarios
 - `README.md` - Este archivo
+-  `diagramas` - carpeta con los diagramas
+     - `DiagramaUML.uxf` - Diagrama de Clases
+     - `Diagramas_Secuencia.uxf` - Diagramas de Secuencia
+     - `diagrama_caso_uso.uxf` - Diagrama de Caso de Uso
 
 
 ## Técnicas POO
@@ -40,6 +44,7 @@ pytest tests.py
 - Enumeraciones (Ubicacion, Clase)
 - Excepciones (validaciones)
 - `__str__` en todas las clases
+- Abstraccion (Clases Abstractas)
 
 **Estado:** ✅ Completado y testeado
 
