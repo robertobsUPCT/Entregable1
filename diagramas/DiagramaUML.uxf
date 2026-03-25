@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>427</x>
+      <y>63</y>
+      <w>203</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_Unidad_Combate_
+--
++ id_combate : str
++ c_transmision : int
+--
++ __init__(id_combate, c_transmision)
++ __str__() : str
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>567</x>
+      <y>532</y>
+      <w>147</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_EUbicacion_
+--
++ Endor : 1
++ Cumulo_Raimos : 2
++ Nebulosa Kaliida: 3
+-</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>203</x>
+      <y>546</y>
+      <w>147</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_EClase_
+--
++ Ejecutor : 1
++ Eclipse : 2
++ Soberano : 3
+-</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>406</x>
+      <y>210</y>
+      <w>224</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_Nave_
+--
++ nombre : str
++ piezas_repuesto : list&lt;str&gt;
+--
++ __init__(nombre, id_combate, c_transmision)
++ __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>812</x>
+      <y>91</y>
+      <w>203</w>
+      <h>161</h>
+    </coordinates>
+    <panel_attributes>_Repuesto_
+--
+- __stock : int
++ nombre : str
++ proveedor : str
++ precio : float
+--
++ __init__(nombre, proveedor, stock, precio)
++ get_disponibles() : int
++ precio_total(cantidad) : float
++ es_disponible(cantidad) : bool
++ actualizar_precio(nuevo_precio)
++ agregar_stock(n)
++ retirar_stock(n)
++ __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1092</x>
+      <y>154</y>
+      <w>196</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>_Almacen_
+--
++ nombre : str
++ localizacion : str
++ catalogo : list[Repuesto]
+--
++ __init__(nombre, localizacion, catalogo)
++ buscar_repuesto(nom) : Repuesto
++ inventario() : dict
++ buscar_por_proveedor(proveedor) : list
++ eliminar_repuesto(nombre) : bool
++ mostrar_catalogo()
++ agregar_catalogo(repuesto)
++ __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>378</y>
+      <w>350</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_Estacion_Espacial_
+--
++ tripulacion : int
++ pasaje : int
++ ubicacion : Ubicacion
+--
++ __init__(nombre, id_combate, c_transmision, tripulacion, pasaje, ubicacion)
++ __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>385</x>
+      <y>378</y>
+      <w>329</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_Nave_Estelar_
+--
++ tripulacion : int
++ pasaje : int
++ clase : Clase
+--
++ __init__(nombre, id_combate, c_transmision, tripulacion, pasaje, clase)
++ __str__() : str
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>378</y>
+      <w>252</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>_Caza_Estelar_
+--
++ dotacion : int
+--
++ __init__(nombre, id_combate, c_transmision, dotacion)
++ __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>266</x>
+      <y>301</y>
+      <w>301</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>410.0;10.0;410.0;50.0;10.0;50.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>546</x>
+      <y>301</y>
+      <w>21</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>546</x>
+      <y>301</y>
+      <w>301</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;410.0;50.0;410.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>546</x>
+      <y>154</y>
+      <w>21</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>266</x>
+      <y>469</y>
+      <w>21</w>
+      <h>91</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>469</y>
+      <w>21</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1008</x>
+      <y>189</y>
+      <w>98</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=n
+m2=1
+</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1092</x>
+      <y>399</y>
+      <w>147</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+_Usuario_
+--
++ usuario : str
+--
++ __init__(usuario)
++ {abstract} __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>924</x>
+      <y>581</y>
+      <w>266</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_Comandante_
+--
++ nave : Nave
+--
++ __init__(usuario, nave)
++ consultar_disponibilidad(nombre_repuesto, almacen)
++ adquirir_repuesto(nombre_repuesto, almacen, n)
++ comparar_precios(nombre_repuesto, almacenes) : tuple
++ __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1246</x>
+      <y>581</y>
+      <w>196</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>_Operario_
+--
++ almacen : Almacen
+--
++ __init__(usuario, almacen)
++ añadir_repuesto(repuesto)
++ cambiar_stock(nombre_repuesto, n)
++ __str__() : str</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1029</x>
+      <y>490</y>
+      <w>154</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>200.0;10.0;200.0;60.0;10.0;60.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1162</x>
+      <y>490</y>
+      <w>168</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;..</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;220.0;60.0;220.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>623</x>
+      <y>280</y>
+      <w>413</w>
+      <h>315</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+
+m2=1</panel_attributes>
+    <additional_attributes>10.0;20.0;560.0;20.0;560.0;430.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1281</x>
+      <y>203</y>
+      <w>105</w>
+      <h>392</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0;120.0;540.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1022</x>
+      <y>224</y>
+      <w>84</w>
+      <h>371</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0;10.0;510.0</additional_attributes>
+  </element>
+</diagram>
